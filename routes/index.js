@@ -32,4 +32,31 @@ router.get('/todosoneknexshortcut', (req, res) => {
     })
 })
 
+router.post('/todosraw', (req, res) => {
+  // with raw numbers must be string
+  knex.raw('insert into todos(id, title, user_id) values(?, ?, ?)', ['8', 'clean car', '1'])
+    .then(() => {
+      knex.select().from('todos')
+        .then(users => {
+          res.send(users)
+        })
+    })
+    .catch((err) => console.error(err))
+})
+
+router.post('/todosknexshortcut', (req, res) => {
+  knex('todos').insert({
+    id: 10,
+    title: "play tennis",
+    user_id: 1
+  })
+    .then(() => {
+      knex.select().from('todos')
+        .then(users => {
+          res.send(users)
+        })
+    })
+    .catch((err) => console.error(err))
+})
+
 module.exports = router;
